@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <!--JQuery and CSS local files -->
+    <script src="./assets/js/lib/jquery-3.3.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="./assets/css/style-index.css">
+         <!-- Howler JS -->
+    <script src="./assets/js/lib/howler.js"></script>
+            <!--PaperJS  -->    
+    <script type="text/javascript" src="./assets/js/lib/paper-full.js"></script>
+        <!-- PaperJS and HowlerJS Script-->
+    <script type="text/paperscript" canvas="myCanvas">
+   
+     ///////////////--HOWLERJS--/////////////////////////         
+        var keyData = {
+            a:{
+                color : "purple",
+                sound: new Howl({
+                    src:['/sounds/bubbles.mp3']
+                })
+            } ,
+            s:{
+                color : "green",
+                sound: new Howl({
+                    src:['/sounds/clay.mp3']
+                })
+            } ,
+            d:{
+                color : "yellow",
+                sound: new Howl({
+                    src:['/sounds/confetti.mp3']
+                })
+            } 
+        }
+
+
+      ///////////////////------------////////////////////
+        var circles = [];
+
+        function onKeyDown(event) {
+            
+            //this ensures it only tries to create shape and get sound, if element is in our array
+            if(keyData[event.key]){
+                // Multiplying any point (x,y) by Point.random() returns a point in the range you gave
+                // And by using view.size. if use resize screen, shape will ALWAYS appear in viewable area
+
+                var maxPoint = new Point(view.size.width, view.size.height);
+                var randomPoint = Point.random();
+                var point = maxPoint * randomPoint; 
+            
+                var newCircle = new Path.RegularPolygon(point, 3, 500);
+                newCircle.fillColor = keyData[event.key].color;
+                keyData[event.key].sound.play();
+                circles.push(newCircle);
+
+            }
+        }
+
+        function onFrame(event) {
+            for (var i = 0 ; i < circles.length ; i++){
+                circles[i].fillColor.hue += 1;
+                circles[i].scale(.9);
+                circles[i].rotate(5);
+            }
+
+        }
+
+    </script>
+
+    <title>JATACAP - Relax to your own sounds</title>
+</head>
+<body>
+	<canvas id="myCanvas" resize></canvas>  
+
+    <!-- <script type="text/javascript" src="assets/js/index.js"></script> -->
+</body>
+</html>
