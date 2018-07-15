@@ -4,3 +4,9 @@
 - Using paperJS and HowlerJS libraries, both of which are amazing
 
 https://jctaillandier.github.io/JATACAPmixer/
+
+
+TO ADD:
+    - mouse related animation
+    - another datafield for each letter object in keyData for different shapes
+    - 

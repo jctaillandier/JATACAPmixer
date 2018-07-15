@@ -14,7 +14,6 @@
     <script type="text/javascript" src="./assets/js/lib/paper-full.js"></script>
         <!-- PaperJS and HowlerJS Script-->
     <script type="text/paperscript" canvas="myCanvas">
-   
      ///////////////--HOWLERJS--/////////////////////////         
      var keyData = {
         q: {
@@ -178,23 +177,28 @@
 
       ///////////////////------------////////////////////
         var circles = [];
+        var clockWise = true;
+
 
         function onKeyDown(event) {
-            
-            //this ensures it only tries to create shape and get sound, if element is in our array
-            if(keyData[event.key]){
-                // Multiplying any point (x,y) by Point.random() returns a point in the range you gave
-                // And by using view.size. if use resize screen, shape will ALWAYS appear in viewable area
-
+            // Multiplying any point (x,y) by Point.random() returns a point in the range you gave
+            // And by using view.size. if use resize screen, shape will ALWAYS appear in viewable area
                 var maxPoint = new Point(view.size.width, view.size.height);
                 var randomPoint = Point.random();
                 var point = maxPoint * randomPoint; 
             
-                var newCircle = new Path.RegularPolygon(point, 3, 500);
-                newCircle.fillColor = keyData[event.key].color;
-                keyData[event.key].sound.play();
-                circles.push(newCircle);
+            //this ensures it only tries to create shape and get sound, if element is in our array
+            if(keyData[event.key]){
+                
+                //returns random from 3 to 10 which will be the amount of sides to polygone rendered (50 is appears like a circle)
+               var randomSides = Math.floor(Math.random() * (50 - 3)) + 3;
 
+                var newShape = new Path.RegularPolygon(point, Number(randomSides), 500);
+                newShape.fillColor = keyData[event.key].color;
+                keyData[event.key].sound.play();
+                circles.push(newShape);
+            //change direction of rotation at every keypress
+                clockWise = !clockWise;
             }
         }
 
@@ -202,7 +206,13 @@
             for (var i = 0 ; i < circles.length ; i++){
                 circles[i].fillColor.hue += 1;
                 circles[i].scale(.9);
-                circles[i].rotate(5);
+
+                if(clockWise){
+                    circles[i].rotate(-5);
+                }
+                else{
+                    circles[i].rotate(5);
+                }
             }
 
         }
