@@ -173,13 +173,77 @@
             color: '#2c3e50'
         }
     }
+    var metData ={
+        // Add 1-9 metronome 1->slower 10->faster
+        1: {
+            sound: new Howl({
+              src: ['sounds/met1.mp3']
+            }),
+            color: '#2c3e50'
+        },
+        2: {
+            sound: new Howl({
+              src: ['sounds/met2.mp3']
+            }),
+            color: '#2c3e50'
+        },
+        3: {
+            sound: new Howl({
+              src: ['sounds/met3.mp3']
+            }),
+            color: '#2c3e50'
+        },
+        4: {
+            sound: new Howl({
+              src: ['sounds/met4.mp3']
+            }),
+            color: '#2c3e50'
+        },
+        5: {
+            sound: new Howl({
+              src: ['sounds/met5.mp3']
+            }),
+            color: '#2c3e50'
+        },
+        6: {
+            sound: new Howl({
+              src: ['sounds/met6.mp3']
+            }),
+            color: '#2c3e50'
+        },
+        7: {
+            sound: new Howl({
+              src: ['sounds/met7.mp3']
+            }),
+            color: '#2c3e50'
+        },
+        8: {
+            sound: new Howl({
+              src: ['sounds/met8.mp3']
+            }),
+            color: '#2c3e50'
+        },
+        9: {
+            sound: new Howl({
+              src: ['sounds/met9.mp3']
+            }),
+            color: '#2c3e50'
+        },
+        0: {
+            
+        }
+    }
+
+        ///////////////////MouseDrag animation////////////////////
+
+        
 
 
-      ///////////////////------------////////////////////
+      ///////////////////Key press Events////////////////////
         var circles = [];
         var clockWise = true;
 
-
+        ////// numbers for metronome //////////
         function onKeyDown(event) {
             // Multiplying any point (x,y) by Point.random() returns a point in the range you gave
             // And by using view.size. if use resize screen, shape will ALWAYS appear in viewable area
@@ -187,21 +251,36 @@
                 var randomPoint = Point.random();
                 var point = maxPoint * randomPoint; 
             
-            //this ensures it only tries to create shape and get sound, if element is in our array
-            if(keyData[event.key]){
+        ///////// letters for sounds //////////
+        
+            if(isNumber(event.key)){//function at end of script
+                var metSound = metData[event.key].sound
+                if(!metSound.playing()){
+                    metSound.play();
+                }
+                else{
+                    metSound.stop();
+                }
                 
-                //returns random from 3 to 10 which will be the amount of sides to polygone rendered (50 is appears like a circle)
-               var randomSides = Math.floor(Math.random() * (50 - 3)) + 3;
+            }
+            else{
+                //this ensures it only tries to create shape and get sound, if element is in our array
+                if(keyData[event.key]){
+                    
+                    //returns random from 3 to 8 which will be the amount of sides to polygone rendered
+                var randomSides = Math.floor(Math.random() * (8 - 3)) + 3;
 
-                var newShape = new Path.RegularPolygon(point, Number(randomSides), 500);
-                newShape.fillColor = keyData[event.key].color;
-                keyData[event.key].sound.play();
-                circles.push(newShape);
-            //change direction of rotation at every keypress
-                clockWise = !clockWise;
+                    var newShape = new Path.RegularPolygon(point, Number(randomSides), 500);
+                    newShape.fillColor = keyData[event.key].color;
+                    keyData[event.key].sound.play();
+                    circles.push(newShape);
+                //change direction of rotation at every keypress
+                    clockWise = !clockWise;
+                }
             }
         }
 
+        /////// shapes animations /////////
         function onFrame(event) {
             for (var i = 0 ; i < circles.length ; i++){
                 circles[i].fillColor.hue += 1;
@@ -215,6 +294,13 @@
                 }
             }
 
+        }
+
+        function isNumber(str){
+            if((str.charCodeAt(0)>=49) && (event.key <=58)){
+                return true;
+            }
+            else{return false;}
         }
 
     </script>
